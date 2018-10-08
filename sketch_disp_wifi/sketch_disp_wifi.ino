@@ -19,22 +19,6 @@ void setup(void)
     Serial.println("Start...");
     Wire.begin();
 
-    // Connect to WiFi network
-    WiFi.begin(ssid, password);
-    Serial.println("");
-
-    // Wait for connection
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(500);
-        Serial.print(".");
-    }
-    Serial.println("");
-    Serial.print("Connected to ");
-    Serial.println(ssid);
-    Serial.print("IP address: ");
-    Serial.println(WiFi.localIP());
-    Serial.println("");
-
     // Сканируем I2C шину
     for(int i = 1; i < 127; i++ )  {
        Wire.beginTransmission(i);
@@ -57,7 +41,22 @@ void setup(void)
     display.display();     
     delay(2000);
 
-    //Вывод данных о подключении
+    display.clearDisplay();
+    display.setTextSize(1);
+    display.setCursor(0,0);
+    display.println("WiFi init:");
+
+    // Connect to WiFi network
+    WiFi.begin(ssid, password);
+
+    // Wait for connection
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        display.print(".");
+    }
+    display.println("");
+    delay(2000);
+    
     display.clearDisplay();
     display.setTextSize(1);
     display.setCursor(0,0);
@@ -65,7 +64,9 @@ void setup(void)
     display.println(ssid);
     display.println("IP address: ");
     display.println(WiFi.localIP());
-    display.display();
+    display.display();     
+    delay(2000);
+
    
 }
 
